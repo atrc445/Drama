@@ -45,5 +45,9 @@ class AwardRelationship(Base):
 	)
 
 	@property
+	def given(self):
+		return bool(self.submission_id) or bool(self.comment_id)
+
+	@property
 	def type(self):
 		return AWARDS[self.kind]
