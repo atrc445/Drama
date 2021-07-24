@@ -14,3 +14,4 @@ from .static import *
 from .users import *
 from .votes import *
 from .feeds import *
+from .awards import *
