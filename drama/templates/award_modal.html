@@ -10,44 +10,20 @@
 				</button>
 			</div>
 			<div id="awardModalBody" class="modal-body">
-				<form id="sex" class="pt-3 px-3 pb-0">
+				<form v-if="loaded" id="sex" class="pt-3 px-3 pb-0">
 					<div class="card-columns awards-wrapper">
-						<div>
-							<input type="radio" id="award-1" name="award">
-							<label class="card" for="award-1">
-								<i class="fas fa-gift"></i><br />
-								<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
-								<span class="text-muted">description</span>
+						<div v-for="(award, index) in awards" :key="index">
+							<input type="radio" :id="index" name="award">
+							<label class="card" :for="index">
+								<i :class="award.icon+' '+award.color"></i><br />
+								<span class="d-block pt-2" style="font-weight: bold; font-size: 14px;">[[ award.title ]]</span>
 							</label>
 						</div>
-						<input type="radio" id="award-2" name="award">
-						<label class="card" for="award-2">
-							<i class="fas fa-gift"></i><br />
-							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
-							<span class="text-muted">description</span>
-						</label>
-						<input type="radio" id="award-3" name="award">
-						<label class="card" for="award-3">
-							<i class="fas fa-gift"></i><br />
-							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
-							<span class="text-muted">description</span>
-						</label>
-						<input type="radio" id="award-4" name="award">
-						<label class="card" for="award-4">
-							<i class="fas fa-gift"></i><br />
-							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
-							<span class="text-muted">description</span>
-						</label>
-						<input type="radio" id="award-5" name="award">
-						<label class="card" for="award-5">
-							<i class="fas fa-gift"></i><br />
-							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
-							<span class="text-muted">description</span>
-						</label>
 					</div>
-					<label for="note">Note (optional):</label>
-					<textarea id="note" name="note" class="form-control" placeholder="Note to include in award PM"></textarea>
 				</form>
+				<div v-else class="p-5 text-center">
+					<h4>Loading...</h4>
+				</div>
 			</div>
 		 <div class="modal-footer">
 			<button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
@@ -64,7 +40,7 @@
 
 	.awards-wrapper label {
 		cursor: pointer;
-		padding: 10px;
+		padding: 15px;
 		text-align: center;
 		text-transform: none!important;
 	}
@@ -91,11 +67,10 @@
 			awards: []
 		},
 		mounted() {
-			let resp = await fetch('/api/awards');
+			fetch('/api/awards')
+				.then(response => response.json())
+				.then(json => this.awards = json);
 
-			let respJson = await resp.json();
-
-			this.awards = respJson;
 			this.loaded = true;
 		}
 	})
