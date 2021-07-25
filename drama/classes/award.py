@@ -7,14 +7,23 @@ from drama.__main__ import Base, app
 
 AWARDS = {
 	"ban": {
+		"kind": "ban",
 		"title": "1-Day Ban",
 		"description": "Ban the author for a day.",
 		"icon": "fas fa-gavel",
 		"color": "text-danger"
 	},
 	"shit": {
+		"kind": "shit",
 		"title": "Literal Shitpost",
 		"description": "Let OP know how much their post sucks ass.",
+		"icon": "fas fa-poop",
+		"color": "text-black-50"
+	},
+	"poo": {
+		"kind": "poo",
+		"title": "sext",
+		"description": "niggerniggernigger",
 		"icon": "fas fa-poop",
 		"color": "text-black-50"
 	}
