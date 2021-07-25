@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+
 <div class="modal fade" id="awardModal" tabindex="-1" role="dialog" aria-labelledby="awardModalTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -7,15 +9,17 @@
 					<span aria-hidden="true"><i class="far fa-times"></i></span>
 				</button>
 			</div>
-			<div class="modal-body">
-				<form id="sex">
-					<div class="card-columns awards-wrapper pt-3 px-3 pb-0">
-						<input type="radio" id="award-1" name="award">
-						<label class="card" for="award-1">
-							<i class="fas fa-gift"></i><br />
-							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
-							<span class="text-muted">description</span>
-						</label>
+			<div id="awardModalBody" class="modal-body">
+				<form id="sex" class="pt-3 px-3 pb-0">
+					<div class="card-columns awards-wrapper">
+						<div>
+							<input type="radio" id="award-1" name="award">
+							<label class="card" for="award-1">
+								<i class="fas fa-gift"></i><br />
+								<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
+								<span class="text-muted">description</span>
+							</label>
+						</div>
 						<input type="radio" id="award-2" name="award">
 						<label class="card" for="award-2">
 							<i class="fas fa-gift"></i><br />
@@ -77,3 +81,22 @@
         background-color: rgba(173, 226, 255, 0.9)!important;
     }
 </style>
+
+<script>
+	new Vue({
+		el: "#awardModalBody",
+		delimiters: ['[[', ']]'],
+		data: {
+			loaded: false,
+			awards: []
+		},
+		mounted() {
+			let resp = await fetch('/api/awards');
+
+			let respJson = await resp.json();
+
+			this.awards = respJson;
+			this.loaded = true;
+		}
+	})
+</script>

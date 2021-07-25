@@ -19,6 +19,12 @@ ACTIONS = {
 }
 
 
+@app.get("/api/awards")
+def get_awards():
+
+    return jsonify(list(AWARDS.values()))
+
+
 @app.put("/api/post/<pid>/awards")
 @auth_required
 def award_post(pid, v):
