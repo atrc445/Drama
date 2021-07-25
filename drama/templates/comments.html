@@ -242,11 +242,11 @@
 
 					<li class="list-inline-item text-muted d-none d-md-inline-block"><a href="/votes?link=https://rdrama.net{{c.permalink}}"><i class="fas fa-arrows-v"></i>Votes</a></li>
 
-					{% if v and v.id!=c.author_id and v.admin_level == 0 %}
+					{% if v and v.id!=c.author_id %}
 						{% if v.banawards > 0 %}
-							<li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" onclick="post_toast('/banaward/comment/{{c.id}}')"><i class="fas fa-user-slash text-danger"></i>Give ban award</a></li>
+							<li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" data-toggle="modal" data-target="#awardModal"><i class="fas fa-gift fa-fw"></i>Give Award</a></li>
 						{% else %}
-							<li class="list-inline-item text-muted d-none d-md-inline-block"><a href="/banaward/comment/{{c.id}}"><i class="fas fa-user-slash text-danger"></i>Give ban award</a></li>
+							<li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" data-toggle="modal" data-target="#awardModal"><i class="fas fa-gift fa-fw"></i>Give Award</a></li>
 						{% endif %}
 					{% endif %}
 
