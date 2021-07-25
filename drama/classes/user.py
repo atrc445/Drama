@@ -156,6 +156,7 @@ class User(Base, Stndrd, Age_times):
 
 	awards = relationship(
 		"AwardRelationship",
+		lazy="dynamic",
 		primaryjoin="User.id==AwardRelationship.user_id"
 	)
 
