@@ -1,0 +1,79 @@
+<div class="modal fade" id="awardModal" tabindex="-1" role="dialog" aria-labelledby="awardModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Give Award</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"><i class="far fa-times"></i></span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="sex">
+					<div class="card-columns awards-wrapper pt-3 px-3 pb-0">
+						<input type="radio" id="award-1" name="award">
+						<label class="card" for="award-1">
+							<i class="fas fa-gift"></i><br />
+							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
+							<span class="text-muted">description</span>
+						</label>
+						<input type="radio" id="award-2" name="award">
+						<label class="card" for="award-2">
+							<i class="fas fa-gift"></i><br />
+							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
+							<span class="text-muted">description</span>
+						</label>
+						<input type="radio" id="award-3" name="award">
+						<label class="card" for="award-3">
+							<i class="fas fa-gift"></i><br />
+							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
+							<span class="text-muted">description</span>
+						</label>
+						<input type="radio" id="award-4" name="award">
+						<label class="card" for="award-4">
+							<i class="fas fa-gift"></i><br />
+							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
+							<span class="text-muted">description</span>
+						</label>
+						<input type="radio" id="award-5" name="award">
+						<label class="card" for="award-5">
+							<i class="fas fa-gift"></i><br />
+							<span style="font-weight: bold; font-size: 14px;">Award title</span><br />
+							<span class="text-muted">description</span>
+						</label>
+					</div>
+					<label for="note">Note (optional):</label>
+					<textarea id="note" name="note" class="form-control" placeholder="Note to include in award PM"></textarea>
+				</form>
+			</div>
+		 <div class="modal-footer">
+			<button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
+			<button type="submit" class="btn btn-warning" id="exileUserButton" disabled>Give Award</button>
+		</div>
+	</div>
+</div>
+</div>
+
+<style>
+	.awards-wrapper input[type="radio"] {
+		display: none;
+	}
+
+	.awards-wrapper label {
+		cursor: pointer;
+		padding: 10px;
+		text-align: center;
+		text-transform: none!important;
+	}
+
+	.awards-wrapper label i {
+		font-size: 45px;
+	}
+
+	.awards-wrapper label:hover {
+		background-color: rgba(173, 226, 255, 0.7)!important;
+	}
+
+	.awards-wrapper input[type="radio"]:checked+label {
+        background-color: rgba(173, 226, 255, 0.9)!important;
+    }
+</style>
