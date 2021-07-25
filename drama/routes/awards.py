@@ -20,9 +20,16 @@ ACTIONS = {
 
 
 @app.get("/api/awards")
-def get_awards():
+@auth_required
+def get_awards(v):
 
-    return jsonify(list(AWARDS.values()))
+    return_value = list(AWARDS.values())
+
+    user_awards = v.awards
+    for val in return_value:
+        val['owned'] = len([x for x in user_awards if x.kind == val['kind']])
+
+    return jsonify(return_value)
 
 
 @app.put("/api/post/<pid>/awards")
