@@ -13,14 +13,30 @@
 				<form v-if="loaded" id="sex" class="pt-3 px-3 pb-0">
 					<div class="card-columns awards-wrapper">
 						<div v-for="(award, index) in awards" :key="index">
-							<input type="radio" :id="index" name="award">
+							<input type="radio" :id="index" :value="index" v-model="picked" :disabled="award.owned < 1">
 							<label class="card" :for="index">
 								<i :class="award.icon+' '+award.color"></i><br />
 								<span class="d-block pt-2" style="font-weight: bold; font-size: 14px;">[[ award.title ]]</span>
+								<span class="text-muted">[[ award.owned ]] owned</span>
 							</label>
 						</div>
 					</div>
+					<div v-if="picked !== null">
+						<div class="award-desc p-3">
+							<i style="font-size: 35px;" :class="pickedAward.icon+' '+pickedAward.color"></i>
+							<div style="margin-left: 15px;">
+								<strong>[[ pickedAward.title ]] Award</strong><br />
+								<span class="text-muted">[[ pickedAward.description ]]</span>
+							</div>
+						</div>
+						<label for="note" class="pt-4">Note (optional):</label>
+						<textarea id="note" name="note" class="form-control" placeholder="Note to include in award notification"></textarea>
+					</div>
 				</form>
+				<div v-else-if="error" class="p-5 text-center">
+					<h4>Failed to fetch awards</h4>
+					<button class="btn btn-primary">Retry</button>
+				</div>
 				<div v-else class="p-5 text-center">
 					<h4>Loading...</h4>
 				</div>
@@ -50,26 +66,49 @@
 	}
 
 	.awards-wrapper label:hover {
-		background-color: rgba(173, 226, 255, 0.7)!important;
+		/*background-color: rgba(173, 226, 255, 0.7)!important;*/
+		background-color: var(--primary)!important;
+		background-opacity: 0.4;
 	}
 
 	.awards-wrapper input[type="radio"]:checked+label {
-        background-color: rgba(173, 226, 255, 0.9)!important;
+        /*background-color: rgba(173, 226, 255, 0.9)!important;*/
+        background-color: var(--primary)!important;
+        background-opacity: 0.9;
+    }
+
+    .award-desc {
+    	border-radius: 5px;
+    	background-color: rgba(221, 221, 221, 0.23);
+    	display: flex;
     }
 </style>
 
 <script>
 	new Vue({
-		el: "#awardModalBody",
+		el: "#awardModal",
 		delimiters: ['[[', ']]'],
 		data: {
 			loaded: false,
-			awards: []
+			error: false,
+			awards: [],
+			picked: null
+		},
+		computed: {
+			pickedAward: function() {
+				if (this.picked !== null) {
+					return this.awards[this.picked];
+				} else {
+					return null;
+				}
+			}
 		},
 		mounted() {
 			fetch('/api/awards')
 				.then(response => response.json())
-				.then(json => this.awards = json);
+				.then(json => {
+					this.awards = json;
+				});
 
 			this.loaded = true;
 		}
