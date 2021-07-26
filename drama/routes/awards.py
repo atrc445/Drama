@@ -44,9 +44,6 @@ def award_post(pid, v):
     if kind not in AWARDS:
         return jsonify({"error": "That award doesn't exist."}), 404
 
-    if not v.has_award(kind):
-        return jsonify({"error": "You don't have that award."}), 404
-
     post_award = g.db.query(AwardRelationship).filter(
         and_(
             AwardRelationship.kind == kind,
@@ -55,9 +52,6 @@ def award_post(pid, v):
             AwardRelationship.comment_id == None
         )
     ).first()
-
-    if post_award:
-        print(f"award kind {post_award.kind} post id {post_award.submission_id} comment id {post_award.comment_id}")
 
     if not post_award or post_award.given:
         return jsonify({"error": "You don't have that award."}), 404
