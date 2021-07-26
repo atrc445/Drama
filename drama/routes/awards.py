@@ -11,7 +11,7 @@ def post_banaward_trigger(post):
     author = post.author
     author.ban(reason="1-day ban award used", days=1)
 
-    send_notification(1046, author, f"Your Drama account has been suspended for a day for [this post]({post.permalink}). It sucked and you should feel bad.")
+    send_notification(1, author, f"Your Drama account has been suspended for a day for [this post]({post.permalink}). It sucked and you should feel bad.")
 
 
 ACTIONS = {
@@ -27,14 +27,17 @@ def get_awards(v):
 
     user_awards = v.awards
     for val in return_value:
-        val['owned'] = len([x for x in user_awards if x.kind == val['kind']])
+        val['owned'] = len([x for x in user_awards if x.kind == val['kind'] and not x.given])
 
     return jsonify(return_value)
 
 
 @app.put("/api/post/<pid>/awards")
 @auth_required
+@validate_formkey
 def award_post(pid, v):
+
+    print("sex")
 
     kind = request.form.get("kind", "")
 
@@ -47,22 +50,37 @@ def award_post(pid, v):
     post_award = g.db.query(AwardRelationship).filter(
         and_(
             AwardRelationship.kind == kind,
-            AwardRelationship.user_id == v.id
+            AwardRelationship.user_id == v.id,
+            AwardRelationship.submission_id == None,
+            AwardRelationship.comment_id == None
         )
     ).first()
 
-    if post_award.given:
+    if post_award:
+        print(f"award kind {post_award.kind} post id {post_award.submission_id} comment id {post_award.comment_id}")
+
+    if not post_award or post_award.given:
         return jsonify({"error": "You don't have that award."}), 404
 
-    post = get_post(pid)
+    post = g.db.query(Submission).filter_by(id=pid).first()
 
     if not post:
         return jsonify({"error": "Invalid post ID"}), 404
 
-    post_award.post_id = post.id
+    print(f"Award post {post.id}")
+
+    post_award.submission_id = post.id
     g.db.add(post_award)
+
+    msg = f"Your [post]({post.permalink}) was given the {AWARDS[kind]['title']} Award!"
+
+    note = request.form.get("note", "")
+    if note:
+        msg += f"\n\n> {note}"
+
+    send_notification(1, post.author, msg)
 
     if kind in ACTIONS:
         ACTIONS[kind](post)
 
-    return redirect(post.permalink)
+    return "", 204
