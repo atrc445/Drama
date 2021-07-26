@@ -1,5 +1,6 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 
+<input type="hidden" id="awardTarget" value="" />
 <div class="modal fade" id="awardModal" tabindex="-1" role="dialog" aria-labelledby="awardModalTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -10,11 +11,11 @@
 				</button>
 			</div>
 			<div id="awardModalBody" class="modal-body">
-				<form v-if="loaded" id="sex" class="pt-3 px-3 pb-0">
+				<form v-if="loaded" id="sex" class="pt-3 pb-0">
 					<div class="card-columns awards-wrapper">
 						<div v-for="(award, index) in awards" :key="index">
 							<input type="radio" :id="index" :value="index" v-model="picked" :disabled="award.owned < 1">
-							<label class="card" :for="index">
+							<label class="card" :for="index" :class="{ disabled: award.owned < 1 }">
 								<i :class="award.icon+' '+award.color"></i><br />
 								<span class="d-block pt-2" style="font-weight: bold; font-size: 14px;">[[ award.title ]]</span>
 								<span class="text-muted">[[ award.owned ]] owned</span>
@@ -30,7 +31,7 @@
 							</div>
 						</div>
 						<label for="note" class="pt-4">Note (optional):</label>
-						<textarea id="note" name="note" class="form-control" placeholder="Note to include in award notification"></textarea>
+						<textarea id="note" name="note" v-model="note" class="form-control" placeholder="Note to include in award notification"></textarea>
 					</div>
 				</form>
 				<div v-else-if="error" class="p-5 text-center">
@@ -43,7 +44,7 @@
 			</div>
 		 <div class="modal-footer">
 			<button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
-			<button type="submit" class="btn btn-warning" id="exileUserButton" disabled>Give Award</button>
+			<button type="submit" class="btn btn-warning" id="awardButton" @click="submit" :disabled="pickedAward === null">Give Award</button>
 		</div>
 	</div>
 </div>
@@ -63,6 +64,10 @@
 
 	.awards-wrapper label i {
 		font-size: 45px;
+	}
+
+	.awards-wrapper label.disabled {
+		opacity: 0.6;
 	}
 
 	.awards-wrapper label:hover {
@@ -92,7 +97,8 @@
 			loaded: false,
 			error: false,
 			awards: [],
-			picked: null
+			picked: null,
+			note: ""
 		},
 		computed: {
 			pickedAward: function() {
@@ -100,6 +106,27 @@
 					return this.awards[this.picked];
 				} else {
 					return null;
+				}
+			}
+		},
+		methods: {
+			async submit() {
+				const target = document.getElementById("awardTarget").value;
+
+				const f = new FormData();
+				f.append("formkey", formkey());
+				f.append("kind", this.pickedAward.kind || "");
+				f.append("note", this.note)
+
+				let response = await fetch(target, {
+					method: "PUT",
+					body: f
+				});
+
+				if (response.ok) {
+					location.reload();
+				} else {
+					alert(response.status);
 				}
 			}
 		},
