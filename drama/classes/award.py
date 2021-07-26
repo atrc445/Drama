@@ -19,13 +19,6 @@ AWARDS = {
 		"description": "Let OP know how much their post sucks ass.",
 		"icon": "fas fa-poop",
 		"color": "text-black-50"
-	},
-	"poo": {
-		"kind": "poo",
-		"title": "sext",
-		"description": "niggerniggernigger",
-		"icon": "fas fa-poop",
-		"color": "text-black-50"
 	}
 }
 
