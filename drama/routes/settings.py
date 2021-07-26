@@ -660,10 +660,10 @@ def settings_title_change(v):
 	new_name=request.form.get("title").strip()
 
 	#verify acceptability
-	if not re.match(valid_title_regex, new_name):
+	if not re.match(valid_title_regex, new_name) and new_name != "":
 		return render_template("settings_profile.html",
 						   v=v,
-						   error=f"This isn't a valid flair.")
+						   error=f"This isn't a valid flair. Flairs must be between 3 and 100 characters long.")
 
 	#make sure name is different
 	if new_name==v.customtitle:
