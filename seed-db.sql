@@ -11,3 +11,5 @@ VALUES
         0, 'admin');
 
 INSERT INTO public.badge_defs VALUES (6, 'Beta User', 'Joined Drama during open beta', 'beta.png', 4, 3, NULL);
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, true);
