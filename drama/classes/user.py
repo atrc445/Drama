@@ -157,7 +157,7 @@ class User(Base, Stndrd, Age_times):
 	awards = relationship(
 		"AwardRelationship",
 		lazy="dynamic",
-		primaryjoin="User.id==AwardRelationship.user_id"
+		primaryjoin="User.id==AwardRelationship.user_id and AwardRelationship.submission_id == None and AwardRelationship.comment_id == None"
 	)
 
 	# properties defined as SQL server-side functions
